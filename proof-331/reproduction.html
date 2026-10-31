@@ -1,0 +1,7 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>markmap nodeMinHeight 实测</title><style>body{font:18px sans-serif;margin:32px}svg{width:95vw;height:500px;border:1px solid #bbb}button{font-size:18px;margin:12px}pre{background:#eee;padding:16px}</style><h1>markmap：节点最小高度实测</h1><p>本地源码运行 · 设置 nodeMinHeight = 80 · 中文短文本节点</p><button id="small">最小高度 16</button><button id="large">最小高度 80</button><svg id="map"></svg><pre id="result"></pre><script type="module">
+import { Markmap } from './packages/markmap-view/src/index.ts';
+const data={content:'本地验证',children:[{content:'前端交互',children:[]},{content:'测试记录',children:[]},{content:'修复复测',children:[]}]};
+const mm=Markmap.create('#map',{duration:0,nodeMinHeight:80},data);
+async function render(h){mm.setOptions({nodeMinHeight:h});await mm.setData(data);await mm.fit();document.querySelector('#result').textContent=JSON.stringify({nodeMinHeight:h,actualHeights:[mm.state.data,...mm.state.data.children].map(n=>n.state.rect.height)},null,2);}
+document.querySelector('#small').onclick=()=>render(16);document.querySelector('#large').onclick=()=>render(80);setTimeout(()=>render(80),500);
+</script></html>
